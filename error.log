@@ -1,0 +1,21 @@
+(Wed Jul 12 17:36:53 2017) Starting GLFW; version: 3.2.1 X11 GLX EGL clock_gettime /dev/js Xf86vm shared
+
+(Wed Jul 12 17:36:53 2017) Successfuly compiled shader.
+Shader text"#version 410
+in vec3 pos;
+
+void main() {
+    gl_Position = vec4(pos.x - 0.25, pos.y + 0.0, pos.z, 1.0);
+}
+"
+
+(Wed Jul 12 17:36:53 2017) Successfuly compiled shader.
+Shader text"#version 410
+out vec4 frag_colour;
+
+void main() {
+    frag_colour = vec4(0.5, 0.5, 0.5, 1.0);
+}
+"
+
+(Wed Jul 12 17:36:53 2017) Successfuly linked program.
