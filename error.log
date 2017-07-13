@@ -1,6 +1,6 @@
-(Wed Jul 12 17:36:53 2017) Starting GLFW; version: 3.2.1 X11 GLX EGL clock_gettime /dev/js Xf86vm shared
+(Fri Jul 14 01:34:02 2017) Starting GLFW; version: 3.2.1 X11 GLX EGL clock_gettime /dev/js Xf86vm shared
 
-(Wed Jul 12 17:36:53 2017) Successfuly compiled shader.
+(Fri Jul 14 01:34:02 2017) Successfuly compiled shader.
 Shader text"#version 410
 in vec3 pos;
 
@@ -9,7 +9,7 @@ void main() {
 }
 "
 
-(Wed Jul 12 17:36:53 2017) Successfuly compiled shader.
+(Fri Jul 14 01:34:02 2017) Successfuly compiled shader.
 Shader text"#version 410
 out vec4 frag_colour;
 
@@ -18,4 +18,4 @@ void main() {
 }
 "
 
-(Wed Jul 12 17:36:53 2017) Successfuly linked program.
+(Fri Jul 14 01:34:02 2017) Successfuly linked program.

@@ -4,6 +4,11 @@
 
 #include "log.h"
 
+/**
+*   Creates objects and prepares it for drawing.
+*   @param vs Code for vertex shader.
+*   @param fs Code for fragment shader.
+*/
 Shader::Shader(std::string vs, std::string fs) :
 vertexShader(0), fragmentShader(0), shaderProgram(0)
 {
@@ -53,6 +58,9 @@ bool Shader::createProgram() {
     return true;
 }
 
+/**
+*   Loads shader program into memory
+*/
 void Shader::useProgram() {
     glUseProgram(shaderProgram);
 }
