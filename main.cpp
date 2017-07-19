@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -13,15 +12,15 @@
 #include "log.h"
 #include "shape.h"
 
-
 std::string loadShaderFromFile(const std::string);
 GLuint compileShader(const char*, const GLenum);
+void updateFPSCounter(GLFWwindow*);
 
 int main() {
     log::restartLog();
     
     std::string tmp = glfwGetVersionString();
-    log::logError("Starting GLFW; version: " + tmp + "\n");
+    log::logErrorPrint("Starting GLFW; version: " + tmp);
     // Register error callback
     glfwSetErrorCallback(log::glfwErrorCallback);
     // Start GL context and OS window using the GLFW helper library
@@ -32,9 +31,24 @@ int main() {
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    
+    // 4x antialiasing
+    glfwWindowHint(GLFW_SAMPLES, 4); 
+
+    int winWidth = 640;
+    int winHeight = 480;
+    
+    // Framebuffer
+    int fWinWidth = 640;
+    int fWinHeight = 480;
+    
 
     // Create window
-    GLFWwindow* window = glfwCreateWindow(640, 480, "Hello Triangle", nullptr, nullptr);
+    GLFWmonitor* mon = glfwGetPrimaryMonitor();
+    const GLFWvidmode* vmode = glfwGetVideoMode(mon);
+    GLFWwindow* window = glfwCreateWindow(vmode->width, vmode->height, "Hello Triangle", nullptr, nullptr);
     if(!window) {
         fprintf(stderr, "ERROR: could not open window with GLFW3\n");
         glfwTerminate();
@@ -68,6 +82,8 @@ int main() {
     // Draw in a loop
     glClearColor(0.6f, 0.6f, 0.8f, 1.0f);
     while(!glfwWindowShouldClose(window)) {
+        updateFPSCounter(window);
+        
         // wipe the drawing surface clear
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         obj1.draw();
@@ -75,12 +91,14 @@ int main() {
         glfwPollEvents();
         // display the drawed stuff
         glfwSwapBuffers(window);
+        
+        // Exit if ESC is pressed.
+        if(GLFW_PRESS == glfwGetKey(window, GLFW_KEY_ESCAPE)) {
+            glfwSetWindowShouldClose(window, 1);
+        }
     }
 
     // Shutdown
-    //glDeleteProgram(shaderProgram);
-    //glDeleteShader(vs);
-    //glDeleteShader(fs);
     glfwTerminate();
     return 0;
 }
@@ -136,3 +154,30 @@ GLuint compileShader(const char* shaderText, const GLenum shaderType) {
     
     return 0;
 } 
+
+void updateFPSCounter(GLFWwindow* window) {
+    double currentSec;
+    double elapsedSec;
+    static double previousSec;
+    static int frameCount;
+    
+    // Get current time
+    currentSec = glfwGetTime();
+    elapsedSec = currentSec - previousSec;
+    
+    // For optimization we are going to limit text updates to 4 per second
+    if (elapsedSec > 0.25) {
+        previousSec = currentSec;
+        double fps = (double)frameCount / elapsedSec;
+        char tmp[128];
+        sprintf(tmp, "OpenGL @ fps: %.2f", fps);
+        glfwSetWindowTitle(window, tmp);
+        frameCount = 0;
+    }
+    frameCount++;
+}
+
+/*void glfwWindowSizeCallbak(GLFWwindow* window, int w, int h) {
+    
+}
+void glfwFramebufferResizeCallback(GLFWwindow*, int, int);*/

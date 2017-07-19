@@ -9,6 +9,8 @@ namespace log {
     bool logErrorPrint(std::string);
     
     void glfwErrorCallback(int, const char*);
+   
+    
     void restartLog();
     
     //void generateLogFileHeader();
