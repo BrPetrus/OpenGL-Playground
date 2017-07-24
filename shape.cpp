@@ -9,10 +9,13 @@
 * @param count How many vertices are in the array.
 */
 Shape::Shape(std::string vs, std::string fs, const GLfloat* points, const int count) :
- vbo(0), vao(0), shader(vs, fs), points(&points[0]), count(count)
+ vbo(0), vao(0), points(&points[0]), count(count)
 {
     createVBO();
     createVAO();
+    shader.addShader(vs, GL_VERTEX_SHADER);
+    shader.addShader(fs, GL_FRAGMENT_SHADER);
+    shader.createProgram();
 }
 
 Shape::~Shape()
@@ -24,6 +27,7 @@ Shape::~Shape()
 */
 void Shape::draw() {
     shader.useProgram();
+    shader.setInputColour(1.0, 1.0, 1.0, 1.0);
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES, 0, count);
 }

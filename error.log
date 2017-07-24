@@ -1,6 +1,5 @@
-(Fri Jul 14 01:34:02 2017) Starting GLFW; version: 3.2.1 X11 GLX EGL clock_gettime /dev/js Xf86vm shared
-
-(Fri Jul 14 01:34:02 2017) Successfuly compiled shader.
+(Mon Jul 24 22:39:42 2017) Starting GLFW; version: 3.2.1 X11 GLX EGL clock_gettime /dev/js Xf86vm shared
+(Mon Jul 24 22:39:42 2017) Successfuly compiled shader.
 Shader text"#version 410
 in vec3 pos;
 
@@ -9,13 +8,16 @@ void main() {
 }
 "
 
-(Fri Jul 14 01:34:02 2017) Successfuly compiled shader.
+(Mon Jul 24 22:39:42 2017) Successfuly compiled shader.
 Shader text"#version 410
 out vec4 frag_colour;
 
+uniform vec4 inputColour;
+
 void main() {
-    frag_colour = vec4(0.5, 0.5, 0.5, 1.0);
+    frag_colour = vec4(inputColour.rgba);
 }
 "
 
-(Fri Jul 14 01:34:02 2017) Successfuly linked program.
+(Mon Jul 24 22:39:42 2017) Uniform: 5
+(Mon Jul 24 22:39:42 2017) Successfuly linked program.

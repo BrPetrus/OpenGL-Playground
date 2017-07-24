@@ -15,10 +15,20 @@
 std::string loadShaderFromFile(const std::string);
 GLuint compileShader(const char*, const GLenum);
 void updateFPSCounter(GLFWwindow*);
+void glfwWindowSizeCallback(GLFWwindow*, int, int);
+void glfwFramebufferResizeCallback(GLFWwindow*, int, int);
+
+// TODO change this please
+int winWidth = 640;
+int winHeight = 480;
+// Framebuffer
+int fWinWidth = 640;
+int fWinHeight = 480;
 
 int main() {
     log::restartLog();
     
+    //TODO this is causing segmentation fallts
     std::string tmp = glfwGetVersionString();
     log::logErrorPrint("Starting GLFW; version: " + tmp);
     // Register error callback
@@ -37,12 +47,7 @@ int main() {
     // 4x antialiasing
     glfwWindowHint(GLFW_SAMPLES, 4); 
 
-    int winWidth = 640;
-    int winHeight = 480;
     
-    // Framebuffer
-    int fWinWidth = 640;
-    int fWinHeight = 480;
     
 
     // Create window
@@ -54,7 +59,10 @@ int main() {
         glfwTerminate();
         return 1;
     }
+    glfwSetWindowSizeCallback(window, glfwWindowSizeCallback);
+    glfwSetFramebufferSizeCallback(window, glfwFramebufferResizeCallback);
     glfwMakeContextCurrent(window);
+    
 
     // Start GLEW extension handler
     glewExperimental = GL_TRUE;
@@ -79,10 +87,12 @@ int main() {
 
     Shape obj1(loadShaderFromFile("Shaders/vertexShader.vert"), loadShaderFromFile("Shaders/fragmentShader.frag"), points, 9);
     
+    
     // Draw in a loop
     glClearColor(0.6f, 0.6f, 0.8f, 1.0f);
     while(!glfwWindowShouldClose(window)) {
         updateFPSCounter(window);
+        glViewport(0, 0, fWinWidth, fWinHeight);
         
         // wipe the drawing surface clear
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -122,6 +132,7 @@ std::string loadShaderFromFile(const std::string path) {
     return text;
 }
 
+//TODO remove this
 GLuint compileShader(const char* shaderText, const GLenum shaderType) {
     // Create shader object
     GLuint shader = glCreateShader(shaderType);
@@ -177,7 +188,11 @@ void updateFPSCounter(GLFWwindow* window) {
     frameCount++;
 }
 
-/*void glfwWindowSizeCallbak(GLFWwindow* window, int w, int h) {
-    
+void glfwWindowSizeCallback(GLFWwindow* window, int w, int h) {
+    winHeight = h;
+    winWidth = w;
 }
-void glfwFramebufferResizeCallback(GLFWwindow*, int, int);*/
+void glfwFramebufferResizeCallback(GLFWwindow* window, int w, int h) {
+    fWinHeight = h;
+    fWinWidth = w;
+}

@@ -1,0 +1,8 @@
+23. Jul 2017 - Hotel Romanus
+	- added Window size and Framebuffer resize callback functions along with
+	  glViewport().
+24. Jul 2017 - Hotel Romanus
+	- Shader object: shaders are now stored in a vector.
+		- now just by calling addShader function you can create a new
+		shader;add; and compile it.
+	

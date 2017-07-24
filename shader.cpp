@@ -1,6 +1,7 @@
 #include "shader.h"
 
 #include <vector>
+//#include <iostream>
 
 #include "log.h"
 
@@ -9,32 +10,38 @@
 *   @param vs Code for vertex shader.
 *   @param fs Code for fragment shader.
 */
-Shader::Shader(std::string vs, std::string fs) :
-vertexShader(0), fragmentShader(0), shaderProgram(0)
-{
-    createShaders(vs, fs);
-    createProgram();
-}
+Shader::Shader() :
+shaderProgram(0)
+{}
 
 Shader::~Shader()
 {
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    //TODO iterate through vector and delete shaders
+    for(std::vector<GLenum>::iterator it = shaders.begin(); it != shaders.end(); it++) {
+       glDeleteShader(*it);
+    }
     glDeleteProgram(shaderProgram);
 }
 
-bool Shader::createShaders(std::string vs, std::string fs) {
+/*bool Shader::createShaders(std::string vs, std::string fs) {
     vertexShader = compileShader(vs.c_str(), GL_VERTEX_SHADER);
     fragmentShader = compileShader(fs.c_str(), GL_FRAGMENT_SHADER);
     
     // TODO CHANGE THIS FOR LOVE OF GOD
     return true;
+}*/
+
+void Shader::addShader(std::string source, GLenum type) {
+    GLuint shader = compileShader(source.c_str(), type);
+    shaders.push_back(shader);
 }
 
 bool Shader::createProgram() {
     shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
+    //Iterate through shaders vector and attach them
+    for(std::vector<GLenum>::iterator it = shaders.begin(); it != shaders.end(); it++) {
+        glAttachShader(shaderProgram, *it);
+    }
     glLinkProgram(shaderProgram);
     
     // Check if it's linked
@@ -53,8 +60,14 @@ bool Shader::createProgram() {
         return false;
     }
     else {
+        //std::cout << "\t\tLinking done; searching for uniform";
+        inputColour = glGetUniformLocation(shaderProgram, "inputColour");
+        std::string tmp = "Uniform: 5";
+        log::logErrorPrint(tmp);
         log::logErrorPrint("Successfuly linked program.");
     }
+    
+    
     return true;
 }
 
@@ -102,3 +115,7 @@ GLuint Shader::compileShader(const char* shaderText, const GLenum shaderType) {
     
     return 0;
 } 
+
+void Shader::setInputColour(float r, float g, float b, float a) {
+    glUniform4f(inputColour, r, g, b, a);
+}

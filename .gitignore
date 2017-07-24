@@ -36,6 +36,9 @@ glew-2.0.0/
 glfw-3.2.1/
 *.workspace
 *.project
+.codelite/
 
 # Ignore log files
 *.log
+error.log
+

@@ -5,3 +5,4 @@ TODO:
 - Include Terezka Easter egg 
 ************************************************************
 - Figure out the resize callbacks functios.
+- main.cpp:31 string tmp is causing segmentation fall:ts

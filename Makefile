@@ -19,4 +19,4 @@ shape.o: shape.h shape.cpp
 	
 clean:
 	rm -f *.o
-	rm -f tutorial
+	rm -f *~
