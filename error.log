@@ -1,23 +1,32 @@
-(Mon Jul 24 22:39:42 2017) Starting GLFW; version: 3.2.1 X11 GLX EGL clock_gettime /dev/js Xf86vm shared
-(Mon Jul 24 22:39:42 2017) Successfuly compiled shader.
+(Sun Aug  6 12:05:24 2017) Starting GLFW; version: 3.2.1 X11 GLX EGL clock_gettime /dev/js Xf86vm shared
+(Sun Aug  6 12:05:24 2017) Successfuly compiled shader.
 Shader text"#version 410
-in vec3 pos;
+
+layout(location = 0) in vec3 vertexPosition;
+layout(location = 1) in vec3 vertexColour;
+
+out vec3 colour;
 
 void main() {
-    gl_Position = vec4(pos.x - 0.25, pos.y + 0.0, pos.z, 1.0);
+    colour = vertexColour;
+    gl_Position = vec4(vertexPosition, 1.0);
 }
 "
 
-(Mon Jul 24 22:39:42 2017) Successfuly compiled shader.
+(Sun Aug  6 12:05:24 2017) Successfuly compiled shader.
 Shader text"#version 410
+
+in vec3 colour;
+
 out vec4 frag_colour;
 
-uniform vec4 inputColour;
+//uniform vec4 inputColour;
 
 void main() {
-    frag_colour = vec4(inputColour.rgba);
+    frag_colour = vec4(colour, 1.0);
 }
+
 "
 
-(Mon Jul 24 22:39:42 2017) Uniform: 5
-(Mon Jul 24 22:39:42 2017) Successfuly linked program.
+(Sun Aug  6 12:05:24 2017) Uniform: 5
+(Sun Aug  6 12:05:24 2017) Successfuly linked program.

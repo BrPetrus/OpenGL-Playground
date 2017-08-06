@@ -9,17 +9,22 @@
 * @param count How many vertices are in the array.
 */
 Shape::Shape(std::string vs, std::string fs, const GLfloat* points, const int count) :
- vbo(0), vao(0), points(&points[0]), count(count)
+ pointsVBO(0), vao(0), points(&points[0]), count(count)
 {
-    createVBO();
-    createVAO();
     shader.addShader(vs, GL_VERTEX_SHADER);
     shader.addShader(fs, GL_FRAGMENT_SHADER);
-    shader.createProgram();
+    createPointsVBO();
 }
 
 Shape::~Shape()
 {
+}
+
+void Shape::prepare() {
+    createVAO();
+    shader.createProgram();
+    shader.useProgram();
+    //shader.setInputColour(1.0, 1.0, 1.0, 1.0);
 }
 
 /**
@@ -27,7 +32,6 @@ Shape::~Shape()
 */
 void Shape::draw() {
     shader.useProgram();
-    shader.setInputColour(1.0, 1.0, 1.0, 1.0);
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES, 0, count);
 }
@@ -36,9 +40,9 @@ void Shape::draw() {
 /**
 * @brief Creates VBO and put data inside.
 */
-void Shape::createVBO() {
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+void Shape::createPointsVBO() {
+    glGenBuffers(1, &pointsVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, pointsVBO);
     // Check if buffer works
     glBufferData(GL_ARRAY_BUFFER, count * sizeof(GLfloat), points, GL_STATIC_DRAW);
 }
@@ -50,6 +54,6 @@ void Shape::createVAO() {
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
     glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo); // Not really necessary here
+    glBindBuffer(GL_ARRAY_BUFFER, pointsVBO); // Not really necessary here
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr); // Define memory layout TODO: make it more modular
 }

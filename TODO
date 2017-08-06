@@ -6,3 +6,4 @@ TODO:
 ************************************************************
 - Figure out the resize callbacks functios.
 - main.cpp:31 string tmp is causing segmentation fall:ts
+- in shape objects make VAO private

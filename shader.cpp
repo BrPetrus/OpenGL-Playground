@@ -61,7 +61,6 @@ bool Shader::createProgram() {
     }
     else {
         //std::cout << "\t\tLinking done; searching for uniform";
-        inputColour = glGetUniformLocation(shaderProgram, "inputColour");
         std::string tmp = "Uniform: 5";
         log::logErrorPrint(tmp);
         log::logErrorPrint("Successfuly linked program.");
@@ -115,7 +114,3 @@ GLuint Shader::compileShader(const char* shaderText, const GLenum shaderType) {
     
     return 0;
 } 
-
-void Shader::setInputColour(float r, float g, float b, float a) {
-    glUniform4f(inputColour, r, g, b, a);
-}

@@ -10,7 +10,8 @@
 #include <GL/GLFW/glfw3.h>
 
 #include "log.h"
-#include "shape.h"
+//#include "shape.h"
+#include "ColouredShape.h"
 
 std::string loadShaderFromFile(const std::string);
 GLuint compileShader(const char*, const GLenum);
@@ -84,16 +85,21 @@ int main() {
         0.5f, -0.5f, 0.0f,
         -0.5f, -0.5f, 0.0f
     };
+    
+    const GLfloat colour[] = {
+        1.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 1.0f
+    };
 
-    Shape obj1(loadShaderFromFile("Shaders/vertexShader.vert"), loadShaderFromFile("Shaders/fragmentShader.frag"), points, 9);
+    ColouredShape obj1(loadShaderFromFile("Shaders/vertexShader.vert"), loadShaderFromFile("Shaders/fragmentShader.frag"), points, 9, colour, 9);
+    obj1.prepare();
     
     
     // Draw in a loop
     glClearColor(0.6f, 0.6f, 0.8f, 1.0f);
     while(!glfwWindowShouldClose(window)) {
         updateFPSCounter(window);
-        glViewport(0, 0, fWinWidth, fWinHeight);
-        
         // wipe the drawing surface clear
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         obj1.draw();

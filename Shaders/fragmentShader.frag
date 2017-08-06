@@ -1,8 +1,11 @@
 #version 410
+
+in vec3 colour;
+
 out vec4 frag_colour;
 
-uniform vec4 inputColour;
+//uniform vec4 inputColour;
 
 void main() {
-    frag_colour = vec4(inputColour.rgba);
+    frag_colour = vec4(colour, 1.0);
 }

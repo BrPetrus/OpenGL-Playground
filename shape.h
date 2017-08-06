@@ -13,12 +13,13 @@ public:
     Shape(std::string vs, std::string fs, const GLfloat* points, const int count);
     ~Shape();
     
-    void draw();
+    virtual void draw();
+    virtual void prepare();
     
     //void prepare(const GLfloat* points);
     
-private:
-    GLuint vbo;
+protected:
+    GLuint pointsVBO;
     GLuint vao;
     Shader shader;
     
@@ -26,8 +27,8 @@ private:
     const GLfloat* points;
     const int count;
     
-    void createVBO();
-    void createVAO();
+    void createPointsVBO();
+    virtual void createVAO();
 };
 
 #endif // SHAPE_H

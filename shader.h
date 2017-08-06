@@ -20,8 +20,6 @@ public:
     bool createProgram();
     void useProgram();
     void unuseProgram();
-    void setInputColour(float r, float g, float b, float a);
-    
     
     const GLuint& getShaderProgram() const {return shaderProgram;}
 private:
@@ -29,7 +27,7 @@ private:
     GLuint shaderProgram;
     
     GLuint compileShader(const char*, const GLenum);
-    GLuint inputColour;
+    GLuint uniform;
 };
 
 #endif // SHADER_H

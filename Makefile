@@ -2,9 +2,9 @@ LIBS=-lGL -lX11 -lXxf86vm -lXrandr -lpthread -lXi -lXinerama -lXcursor -ldl -lrt
 CFLAGS=-std=c++11 -Wall -g
 
 
-run.out: main.o log.o shader.o shape.o
-	g++ main.o log.o shader.o shape.o -o run.out $(LIBS) $(CFLAGS)
-	
+run.out: main.o log.o shader.o shape.o ColouredShape.o
+	g++ main.o log.o shader.o shape.o ColouredShape.o -o run.out $(LIBS) $(CFLAGS)
+
 main.o: main.cpp
 	g++ -c main.cpp $(CFLAGS) -o main.o
 		
@@ -16,6 +16,9 @@ shader.o: shader.h shader.cpp
 
 shape.o: shape.h shape.cpp
 	g++ -c shape.cpp -o shape.o $(CFLAGS) $(LIBS)
+	
+ColouredShape.o: ColouredShape.h ColouredShape.cpp
+	g++ -c ColouredShape.cpp -o ColouredShape.o $(CFLAGS) $(LIBS)
 	
 clean:
 	rm -f *.o
