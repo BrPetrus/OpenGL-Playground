@@ -18,6 +18,9 @@ public:
     
     //void prepare(const GLfloat* points);
     
+    const Shader& getShader() const {return shader;}
+    void useProgram();
+    
 protected:
     GLuint pointsVBO;
     GLuint vao;

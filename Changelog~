@@ -11,4 +11,3 @@
 	- made some shape functions virtual
 9. Jul 2017 - Limbach
 	- added backface culling.
-	- added matrix transformations.

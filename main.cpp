@@ -10,6 +10,7 @@
 #include <GL/GLFW/glfw3.h>
 
 #include "log.h"
+#include "maths.h"
 //#include "shape.h"
 #include "ColouredShape.h"
 
@@ -27,13 +28,13 @@ int fWinWidth = 640;
 int fWinHeight = 480;
 
 int main() {
-    log::restartLog();
+    logTools::restartLog();
     
     //TODO this is causing segmentation fallts
     std::string tmp = glfwGetVersionString();
-    log::logErrorPrint("Starting GLFW; version: " + tmp);
+    logTools::logErrorPrint("Starting GLFW; version: " + tmp);
     // Register error callback
-    glfwSetErrorCallback(log::glfwErrorCallback);
+    glfwSetErrorCallback(logTools::glfwErrorCallback);
     // Start GL context and OS window using the GLFW helper library
     if(!glfwInit()) {
         fprintf(stderr, "ERROR: could not start GLFW3\n");
@@ -78,6 +79,10 @@ int main() {
     // Tell GL to only draw onto a pixel if the shape is closer to the viewer
     glEnable(GL_DEPTH_TEST); // enable depth testing
     glDepthFunc(GL_LESS); // depth-testing interprets a smaller value as closer
+    
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CW);
 
     /*OTHER STUFF GOES HERE NEXT*/
     const GLfloat points[] = {
@@ -92,14 +97,46 @@ int main() {
         0.0f, 0.0f, 1.0f
     };
 
-    ColouredShape obj1(loadShaderFromFile("Shaders/vertexShader.vert"), loadShaderFromFile("Shaders/fragmentShader.frag"), points, 9, colour, 9);
+    ColouredShape obj1(loadShaderFromFile("Shaders/vertexShader2.vert"), loadShaderFromFile("Shaders/fragmentShader.frag"), points, 9, colour, 9);
     obj1.prepare();
     
     
+    // Matrices
+    float matrix[] = {
+        1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f, 0.0f, 
+        0.0f, 0.0f, 1.0f, 0.0f, 
+        0.5f, 0.0f, 0.0f, 1.0f
+    };
+    
+    GLuint shader = obj1.getShader().getShaderProgram();
+    int matrixLoc = glGetUniformLocation(shader, "matrix");
+    glUniformMatrix4fv(matrixLoc, 1, GL_FALSE, matrix);
+    
     // Draw in a loop
     glClearColor(0.6f, 0.6f, 0.8f, 1.0f);
+    float speed = 1.0f; // Move at 1 unit per second
+    float last_position = 0.0f;
     while(!glfwWindowShouldClose(window)) {
         updateFPSCounter(window);
+        
+        // Timer
+        static double previousSec = glfwGetTime();
+        double currentSec = glfwGetTime();
+        double elapsedSec = currentSec - previousSec;
+        previousSec = currentSec;
+        
+        // Reverse direction if necessary
+        if (maths::absoluteValue(last_position) > 1.0f) {
+            speed = -speed;
+        }
+        
+        // Manipulate matrix
+        matrix[12] = elapsedSec * speed + last_position;
+        last_position = matrix[12];
+        obj1.useProgram();
+        glUniformMatrix4fv(matrixLoc, 1, GL_FALSE, matrix); 
+       
         // wipe the drawing surface clear
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         obj1.draw();
@@ -163,11 +200,11 @@ GLuint compileShader(const char* shaderText, const GLenum shaderType) {
     // Unsuccessful
     GLint logSize = 0;
     glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logSize);
-    GLchar log[logSize]; // Create log variable
-    glGetShaderInfoLog(shader, logSize, nullptr, &log[0]);
+    GLchar logTools[logSize]; // Create log variable
+    glGetShaderInfoLog(shader, logSize, nullptr, &logTools[0]);
     
     // Print log
-    std::cerr << log << std::endl;
+    std::cerr << logTools << std::endl;
     
     return 0;
 } 

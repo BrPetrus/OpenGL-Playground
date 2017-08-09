@@ -56,14 +56,14 @@ bool Shader::createProgram() {
         for(auto i = infoLog.begin(); i != infoLog.end(); i++) {
             text += *i;
         }
-        log::logErrorPrint(text);
+        logTools::logErrorPrint(text);
         return false;
     }
     else {
         //std::cout << "\t\tLinking done; searching for uniform";
         std::string tmp = "Uniform: 5";
-        log::logErrorPrint(tmp);
-        log::logErrorPrint("Successfuly linked program.");
+        logTools::logErrorPrint(tmp);
+        logTools::logErrorPrint("Successfuly linked program.");
     }
     
     
@@ -96,21 +96,21 @@ GLuint Shader::compileShader(const char* shaderText, const GLenum shaderType) {
     // Successful
     if (success == GL_TRUE) {
         std::string text = "Successfuly compiled shader.\nShader text\"" + (std::string)shaderText + "\"\n";
-        log::logErrorPrint(text);
+        logTools::logErrorPrint(text);
         return shader;
     }
     
     std::string text = "Unsuccessfuly compiled shader.\nShader text\"" + (std::string)shaderText + "\"\n";
-    log::logErrorPrint(text);
+    logTools::logErrorPrint(text);
     
     // Unsuccessful
     GLint logSize = 0;
     glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logSize);
-    GLchar log[logSize]; // Create log variable
-    glGetShaderInfoLog(shader, logSize, nullptr, &log[0]);
+    GLchar logTools[logSize]; // Create log variable
+    glGetShaderInfoLog(shader, logSize, nullptr, &logTools[0]);
     
     // Print log
-    log::logErrorPrint(log);
+    logTools::logErrorPrint(logTools);
     
     return 0;
 } 

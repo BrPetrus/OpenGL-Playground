@@ -1,6 +1,13 @@
 #version 410
-in vec3 pos;
+
+layout(location = 0) in vec3 vertexPosition;
+layout(location = 1) in vec3 vertexColour;
+
+out vec3 colour;
+
+uniform mat4 matrix;
 
 void main() {
-    gl_Position = vec4(pos.x - 0.25, pos.y + 0.0, pos.z, 1.0);
+    colour = vertexColour;
+    gl_Position = matrix * vec4(vertexPosition, 1.0);
 }

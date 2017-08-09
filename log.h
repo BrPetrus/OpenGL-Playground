@@ -3,7 +3,8 @@
 
 #include <string>
 
-namespace log {
+
+namespace logTools {
     const std::string path = "errors.log";
     bool logError(std::string);
     bool logErrorPrint(std::string);

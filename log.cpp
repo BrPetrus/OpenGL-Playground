@@ -4,7 +4,7 @@
 #include <iostream>
 #include <ctime>
 
-namespace log {
+namespace logTools {
     /**
      * @brief Prints message to log file
      * @param message This is printed to log

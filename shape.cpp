@@ -57,3 +57,7 @@ void Shape::createVAO() {
     glBindBuffer(GL_ARRAY_BUFFER, pointsVBO); // Not really necessary here
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr); // Define memory layout TODO: make it more modular
 }
+
+void Shape::useProgram() {
+    shader.useProgram();
+}
